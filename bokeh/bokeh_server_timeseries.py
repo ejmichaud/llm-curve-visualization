@@ -70,7 +70,7 @@ text = Div(text="Sample with context and next token (token to be predicted). Ans
            )
 
 newline_tokens = ['\n', '\r', '\r\n', '\v', '\f']
-def tokens_to_html(tokens, max_len=200):
+def tokens_to_html(tokens, max_len=150):
     html = ""
     txt = ""
     tokens = tokens[-max_len:]
