@@ -41,7 +41,7 @@ p1 = figure(width=400, height=400, tools="tap,pan,box_zoom,reset", title="Space 
 p1.circle('x_values', 'y_values', size=5, source=source1,
           color='red',
           nonselection_fill_color='grey',
-          nonselection_fill_alpha=1.0,
+          nonselection_fill_alpha=0.5,
           nonselection_line_color='grey',
           selection_fill_color='red',
           selection_fill_alpha=1.0,
@@ -49,7 +49,7 @@ p1.circle('x_values', 'y_values', size=5, source=source1,
 
 p2 = figure(width=400, height=400, title="Selected training curve", x_axis_type='log', y_range=(-0.1, 18))
 p2.line('x_values', 'y_values', source=source2, line_width=3, color='red', legend_label="Loss for this token")
-p2.line(steps, mean_curve, line_width=3, color="grey", legend_label="Mean loss across tokens")
+p2.line(steps, mean_curve, line_width=3, color="grey", line_dash="dashed", legend_label="Mean loss across tokens")
 p2.xaxis.axis_label = "steps"
 p2.yaxis.axis_label = "cross-entropy loss (nats)"
 
@@ -64,7 +64,7 @@ text = Div(text="Sample with context and next token (token to be predicted). Ans
         #    render_as_text=True,
            styles={'border': '2px solid black',
                    'background-color': 'white',
-                   'font-size': '110%',
+                   'font-size': '100%',
                    'font-family': 'monospace',
                    }
            )
@@ -73,6 +73,8 @@ newline_tokens = ['\n', '\r', '\r\n', '\v', '\f']
 def tokens_to_html(tokens, max_len=150):
     html = ""
     txt = ""
+    if len(tokens) > max_len:
+        html += '<span>...</span>'
     tokens = tokens[-max_len:]
     for i, token in enumerate(tokens):
         background_color = "white" if i != len(tokens) - 1 else "#FF9999"
@@ -85,7 +87,7 @@ def tokens_to_html(tokens, max_len=150):
         else:
             html += f'<span style="border: 1px solid #DDD; background-color: {background_color}; white-space: pre-wrap;">{token}</span>'
     if "</" in txt:
-        return "CONTEXT NOT RENDERED FOR SECURITY REASONS SINCE IT CONTAINS HTML CODE (could contain javascript)."
+        return "CONTEXT NOT LOADED FOR SECURITY REASONS SINCE IT CONTAINS HTML CODE (could contain javascript)."
     else:
         return html
 
